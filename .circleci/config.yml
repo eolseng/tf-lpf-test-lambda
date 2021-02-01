@@ -1,0 +1,32 @@
+version: 2.1
+
+orbs:
+  aws-s3: circleci/aws-s3@2.0.0
+
+workflows:
+  test-build-deploy:
+    jobs:
+      - dev-build-deploy:
+          context: pa-aws-dev-deploy
+          filters:
+            branches:
+              only:
+                - development
+                - staging
+
+jobs:
+  dev-build-and-deploy:
+    executor: aws-s3/default
+    steps:
+      - checkout
+      - run:
+          name: Create build artifact
+          command: |
+            mkdir build
+            cp handler.js ./build
+            cd build || exit
+            zip -r ./$CIRCLE_PROJECT_REPONAME-$CIRCLE_BRANCH.zip .
+      - aws-s3/copy:
+          from: ./build/$CIRCLE_PROJECT_REPONAME-$CIRCLE_BRANCH.zip
+          to: 's3://$S3_CODE_BUCKET/$CIRCLE_PROJECT_REPONAME/'
+          arguments: '--metadata Branch=$CIRCLE_BRANCH,Sha1=$CIRCLE_SHA1,Tag=$CIRCLE_TAG,PullRequestUrl=$CIRCLE_PULL_REQUEST'
