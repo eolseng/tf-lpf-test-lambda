@@ -4,9 +4,9 @@ orbs:
   aws-s3: circleci/aws-s3@2.0.0
 
 workflows:
-  build-and-deploy-dev:
+  test-build-deploy:
     jobs:
-      - dev-build-and-deploy:
+      - build-and-deploy-dev:
           context: pa-aws-dev-deploy
           filters:
             branches:
