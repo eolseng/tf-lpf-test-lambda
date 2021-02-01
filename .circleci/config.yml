@@ -4,9 +4,9 @@ orbs:
   aws-s3: circleci/aws-s3@2.0.0
 
 workflows:
-  test-build-deploy:
+  test-build-deploy-dev:
     jobs:
-      - dev-build-deploy:
+      - dev-build-and-deploy:
           context: pa-aws-dev-deploy
           filters:
             branches:
@@ -15,7 +15,7 @@ workflows:
                 - staging
 
 jobs:
-  dev-build-and-deploy:
+  build-and-deploy-dev:
     executor: aws-s3/default
     steps:
       - checkout
