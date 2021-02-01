@@ -31,3 +31,7 @@ jobs:
           from: ./build/$CIRCLE_PROJECT_REPONAME-$CIRCLE_BRANCH.zip
           to: 's3://$S3_CODE_BUCKET/$CIRCLE_PROJECT_REPONAME/'
           arguments: '--metadata Branch=$CIRCLE_BRANCH,Sha1=$CIRCLE_SHA1,Tag=$CIRCLE_TAG,PullRequestUrl=$CIRCLE_PULL_REQUEST'
+      - run:
+          name: Update function code
+          command: |
+            aws update-function-code --function-name development-hello-world --s3-bucket $S3_CODE_BUCKET --s3-key $CIRCLE_PROJECT_REPONAME/$CIRCLE_PROJECT_REPONAME-$CIRCLE_BRANCH.zip

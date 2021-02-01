@@ -1,3 +1,3 @@
-export const handler = async () => {
+exports.handler = async (event) => {
     return {statusCode: 200, body: "Hello world!"};
 }
