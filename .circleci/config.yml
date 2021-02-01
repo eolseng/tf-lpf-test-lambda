@@ -16,7 +16,8 @@ workflows:
 
 jobs:
   build-and-deploy-dev:
-    executor: aws-s3/default
+    docker:
+      - image: cimg/base:stable
     steps:
       - checkout
       - run:
